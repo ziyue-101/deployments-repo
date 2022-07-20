@@ -1,0 +1,27 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: backend
+  annotations:
+    config.kubernetes.io/local-config: "true"
+upstream:
+  type: git
+  git:
+    repo: https://github.com/ziyue-101/blueprints-repo.git
+    directory: simplens
+    ref: simplens/v1
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/ziyue-101/blueprints-repo.git
+    directory: simplens
+    ref: simplens/v1
+    commit: ef961760322c5ac8fcb878f1ce2a98aede510f77
+info:
+  description: simplens blueprints
+pipeline:
+  mutators:
+  - image: gcr.io/kpt-fn/set-namespace:v0.4.1
+    configPath: package-context.yaml
+  - image: gcr.io/kpt-fn/apply-replacements:v0.1.1
+    configPath: apply-replacements.yaml
